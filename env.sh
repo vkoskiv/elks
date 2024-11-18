@@ -11,8 +11,7 @@ if [ ! -e "env.sh" ]; then
 	return 1;
 fi
 
-export TOPDIR="$(pwd)"
-echo TOPDIR set to $TOPDIR
+TOPDIR="$(pwd)"
 
 export CROSSDIR="$TOPDIR/cross"	
 echo "CROSSDIR set to $CROSSDIR"

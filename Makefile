@@ -1,7 +1,4 @@
-
-ifndef TOPDIR
-$(error TOPDIR is not defined; did you mean to run './build.sh' instead?)
-endif
+export TOPDIR := $(shell pwd)
 
 include $(TOPDIR)/Make.defs
 
