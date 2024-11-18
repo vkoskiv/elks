@@ -87,8 +87,11 @@ syntax.c syntax.h: mksyntax
 mksyntax: mksyntax.c parser.h
 	gcc -O2 mksyntax.c -o $@
 
-bltin/operators.h:	bltin/mkexpr bltin/binary_op bltin/unary_op
-	cd bltin && sh mkexpr
+bltin/operators.h:	bltin/mkexpr_h bltin/binary_op bltin/unary_op
+	cd bltin && sh mkexpr_h
+
+bltin/operators.c:  bltin/mkexpr_c bltin/binary_op bltin/unary_op
+	cd bltin && sh mkexpr_c
 
 bltin/echo.o:	bltin/echo.c
 	cd bltin && $(CC) -I.. $(CFLAGS) -c echo.c
@@ -96,7 +99,7 @@ bltin/echo.o:	bltin/echo.c
 bltin/expr.o:	bltin/expr.c
 	cd bltin && $(CC) -I.. $(CFLAGS) -c expr.c
 
-bltin/operators.o:	bltin/operators.c
+bltin/operators.o: bltin/operators.h bltin/operators.c
 	cd bltin && $(CC) -I.. $(CFLAGS) -c operators.c
 
 bltin/regexp.o:	bltin/regexp.c
