@@ -4,8 +4,7 @@ with the current ELKS version and fixed a few problems.
 
 To enable the FAT support run "make menuconfig" in the elks directory. Then enable
 "MS-DOS file system" and "Full VFS support" in the "Filesystem Support" section. Disable
-e.g. the serial device drivers to get sufficient memory space. Then run the build.sh
-script.
+e.g. the serial device drivers to get sufficient memory space. Then run make.
 
 In the elkscmd/test/fat directory there is a script to generate a fat32 disk image which 
 I have used for testing. The is also a script to list the contents of this disk image.

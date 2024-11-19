@@ -29,17 +29,13 @@ jobs:
           path: cross
           key: cross-${{ hashFiles('tools/*') }}-${{ runner.os }}
 
-      - name: prepare
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: 'mkdir cross'
-
       - name: build
         if: steps.cache.outputs.cache-hit != 'true'
-        run: tools/build.sh
+        run: 'make toolchain'
 
       - name: prune
         if: steps.cache.outputs.cache-hit != 'true'
-        run: tools/prune.sh
+        run: 'make prune-toolchain'
 
       - name: upload
         if: steps.cache.outputs.cache-hit != 'true'

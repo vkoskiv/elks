@@ -58,6 +58,7 @@ A full set of disk images are available for download, for you to try out ELKS: [
 
 ## How to build
 
+TL;DR: `make menuconfig && make`
 Full build instructions are [here](https://github.com/ghaerr/elks/blob/master/BUILD.md).
 
 ## Wiki

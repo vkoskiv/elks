@@ -29,11 +29,9 @@ RUN apt-get update -qq \
 USER $USER
 # copy in code and build cross tooling
 COPY --chown=$USER:$USER . /elks
-RUN mkdir -p "cross" \
- && tools/build.sh
+RUN make toolchain
 
-# run the rest of the build interactively from step 3: https://github.com/jbruchon/elks/blob/master/BUILD.md
-# . ./env.sh
+# run the rest of the build interactively from step 1: https://github.com/ghaerr/elks/blob/master/BUILD.md
 # make menuconfig
 # make all
 

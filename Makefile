@@ -1,10 +1,16 @@
 export TOPDIR := $(shell pwd)
+export CROSSDIR := $(TOPDIR)/cross
+ELKSTOOLS_BIN := $(TOPDIR)/elks/tools/bin
+ELKSCROSS_BIN := $(CROSSDIR)/bin
+
+PATH := $(PATH):$(ELKSCROSS_BIN):$(ELKSTOOLS_BIN)
+SHELL := env PATH=$(PATH) /bin/bash
 
 include $(TOPDIR)/Make.defs
 
-.PHONY: all clean libc kconfig defconfig config menuconfig image images kclean
+.PHONY: all cross toolchain clean libc kconfig defconfig config menuconfig image images kclean
 
-all: .config include/autoconf.h
+all: toolchain .config include/autoconf.h
 	$(MAKE) -C libc all
 	$(MAKE) -C libc DESTDIR='$(TOPDIR)/cross' install
 	$(MAKE) -C elks all
@@ -15,21 +21,33 @@ ifeq ($(shell uname), Linux)
 	$(MAKE) -C elksemu PREFIX='$(TOPDIR)/cross' elksemu
 endif
 
-image:
+cross:
+	mkdir -p "$(CROSSDIR)"
+
+toolchain: cross
+	$(MAKE) -C tools all
+
+prune-toolchain: toolchain
+	$(MAKE) -C tools prune
+
+# FIXME: Restructure dependencies instead of slapping toolchain on all of these
+image: toolchain
 	$(MAKE) -C image
 
-images:
+images: toolchain
 	$(MAKE) -C image images
 
 kimage: kernel image
 
-kernel:
+kernel: toolchain
 	$(MAKE) -C elks
 
-kclean:
+kclean: toolchain
 	$(MAKE) -C elks kclean
 
-clean:
+# FIXME: 'clean' target of libc depends on ia16-elf-gcc, which seems suspect
+# Remove toolchain dependency once resolved
+clean: toolchain
 	$(MAKE) -C libc clean
 	$(MAKE) -C libc DESTDIR='$(TOPDIR)/cross' uninstall
 	$(MAKE) -C elks clean

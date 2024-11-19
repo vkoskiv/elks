@@ -33,16 +33,12 @@ jobs:
           path: cross
           key: cross-${{ hashFiles('tools/*') }}-${{ runner.os }}
 
-      - name: prepare
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: 'mkdir -p cross'
-
       - name: cross
         if: steps.cache.outputs.cache-hit != 'true'
-        run: tools/build.sh
+        run: 'make toolchain'
 
       - name: build
-        run: ./build.sh auto allimages
+        run: ./ci.sh
 
       - name: upload
         uses: actions/upload-artifact@v4
